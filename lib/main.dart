@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:joystick/joystick.dart';
+import 'package:control_pad/views/joystick_view.dart';
 
 void main() {
   runApp(ExampleApp());
@@ -19,25 +19,16 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Control Pad Ee'),
-        ),
-        body: Align(
-          alignment: Alignment.bottomCenter,
-          child: Joystick(
-              size: 100,
-              isDraggable: true,
-              iconColor: Colors.amber,
-              backgroundColor: Colors.black,
-              opacity: 0.5,
-              joystickMode: JoystickModes.all,
-              onUpPressed: () {},
-              onLeftPressed: () {},
-              onRightPressed: () {},
-              onDownPressed: () {},
-              onPressed: (_direction) {
-                // print("pressed $_direction");
-              }),
-        ));
+      appBar: AppBar(
+        title: Text('Control Pad Ee'),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 5),
+          JoystickView(size: 200),
+        ],
+      ),
+    );
   }
 }
