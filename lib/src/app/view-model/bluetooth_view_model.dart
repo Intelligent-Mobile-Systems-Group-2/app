@@ -13,8 +13,11 @@ import 'package:stacked/stacked.dart';
 import '../bluetooth/bluetooth_device_manager.dart';
 
 class BluetoothViewModel extends BaseViewModel {
-  BluetoothDiscoverManager _bluetoothDiscoverManager;
-  BluetoothDeviceManager _bluetoothDeviceManager;
+
+  Final refreshTimeout = Duration(seconds: 10);
+  
+  BluetoothDiscoverManager _discoverManager;
+  BluetoothDeviceManager _deviceManager;
   RobotInteractor _robotInteractor;
   RobotController _robotController;
 
@@ -25,7 +28,21 @@ class BluetoothViewModel extends BaseViewModel {
     _robotController = GetIt.I<RobotController>();
   }
 
-  Stream<List<BluetoothDevice>> get devices => _bluetoothDeviceManager.devices;
+  Stream<List<ScanResult>> get scanResults => _bluetoothDeviceManager.scanResults;
+
+  Future<bool> get isAvailable => _discoveryManager.isAvailable;
+
+  Future<bool> get isEnabled => _discoveryManager.isEnabled;
+
+  bool _isRefreshing = false;
+  bool get isRefreshing => _isRefreshing;
+
+  BluetoothDevice? _selectedDevice;
+  BluetoothDevice? get selectedDevice => _selectedDevice;
+
+  Future<void> initialize() async{
+    return refresh();
+  }
 
   Future<void> startScan({ScanMode scanMode = ScanMode.balanced}) async {
     await _bluetoothDiscoverManager.startScan(timeout: Duration(seconds: 5), scanMode: scanMode);
@@ -36,7 +53,7 @@ class BluetoothViewModel extends BaseViewModel {
   }
 
   Future<void> connect(BluetoothDevice device) async {
-    await _bluetoothDeviceManager.connect(device);
+    await _deviceManager.connect(device);
   }
 
   Future<void> disconnect() async {
