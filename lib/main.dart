@@ -1,10 +1,7 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
-
 import 'package:flutter/material.dart';
 import 'package:control_pad/views/joystick_view.dart';
 import 'dart:async';
-//import 'package:flutter/services.dart';
-//import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter/services.dart';
 
 Future<void> main() async {
   runApp(MainScreen());
@@ -32,7 +29,10 @@ class _JoyPadState extends State<JoyPad> {
     return Scaffold(
       appBar: AppBar(title: Text("nbar")),
       body: Container(
-          child: Row(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           JoystickView(
             onDirectionChanged: (double degree, double distance) {
