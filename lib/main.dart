@@ -1,8 +1,10 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter/material.dart';
 import 'package:control_pad/views/joystick_view.dart';
 import 'dart:async';
-import 'package:flutter/services.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+//import 'package:flutter/services.dart';
+//import 'package:flutter_blue/flutter_blue.dart';
 
 Future<void> main() async {
   runApp(MainScreen());
