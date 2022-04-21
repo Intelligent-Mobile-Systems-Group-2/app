@@ -1,4 +1,0 @@
-#Wed Apr 20 11:52:19 CEST 2022
-base.0=/Users/joakimchan/StudioProjects/Int_App/app/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
