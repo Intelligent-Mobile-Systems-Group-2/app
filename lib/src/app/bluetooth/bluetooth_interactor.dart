@@ -27,7 +27,7 @@ class BluetoothInteractor {
       return _characteristicByUUID[uuid]!.value;
     }
 
-    Interactor? createInstance<Interactor extends BluetoothInteractor>(
+    static Interactor? createInstance<Interactor extends BluetoothInteractor>(
         List<BluetoothService> services) {
       switch (Interactor) {
         case RobotInteractor:

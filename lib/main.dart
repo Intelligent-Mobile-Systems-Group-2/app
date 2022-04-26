@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:control_pad/views/joystick_view.dart';
 
+import 'package:int_app/src/app/view/bluetooth-view/bluetoothBody.dart';
+
 void main() {
   runApp(ExampleApp());
 }
@@ -9,8 +11,8 @@ class ExampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Control Pad Ee',
-      home: HomePage(),
+      title: 'Control Pad Ee', home: FindDevicesScreen(),
+//      home: HomePage(),
     );
   }
 }
