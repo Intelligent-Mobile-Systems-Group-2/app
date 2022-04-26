@@ -3,36 +3,28 @@ import 'dart:developer';
 
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue/gen/flutterblue.pbjson.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
-import 'package:ims/src/app/bluetooth/bluetooth_device_manager.dart';
-import 'package:ims/src/app/bluetooth/bluetooth_discover_manager.dart';
-import 'package:ims/src/app/bluetooth/controllers/robot_controller.dart';
-import 'package:ims/src/app/bluetooth/interactors/robot_interactor.dart';
 import 'package:stacked/stacked.dart';
 import '../bluetooth/bluetooth_device_manager.dart';
+import '../bluetooth/bluetooth_discover_manager.dart';
+import '../bluetooth/controllers/robot_controller.dart';
+import '../bluetooth/interactors/robot_interactor.dart';
 
 class BluetoothViewModel extends BaseViewModel {
+  final _bluetoothDiscoveryManager = GetIt.I<BluetoothDiscoverManager>();
+  final _bluetoothDeviceManager =
+      GetIt.I<BluetoothDeviceManager<RobotInteractor, RobotController>>();
 
-  Final refreshTimeout = Duration(seconds: 10);
-  
-  BluetoothDiscoverManager _discoverManager;
-  BluetoothDeviceManager _deviceManager;
-  RobotInteractor _robotInteractor;
-  RobotController _robotController;
+  final refreshTimeout = Duration(seconds: 10);
 
-  BluetoothViewModel() {
-    _bluetoothDiscoverManager = GetIt.I<BluetoothDiscoverManager>();
-    _bluetoothDeviceManager = GetIt.I<BluetoothDeviceManager>();
-    _robotInteractor = GetIt.I<RobotInteractor>();
-    _robotController = GetIt.I<RobotController>();
-  }
+  Stream<List<ScanResult>> get scanResults =>
+      _bluetoothDeviceManager.scanResults;
 
-  Stream<List<ScanResult>> get scanResults => _bluetoothDeviceManager.scanResults;
+  Future<bool> get isAvailable => _bluetoothDiscoveryManager.isAvailable;
 
-  Future<bool> get isAvailable => _discoveryManager.isAvailable;
-
-  Future<bool> get isEnabled => _discoveryManager.isEnabled;
+  Future<bool> get isEnabled => _bluetoothDiscoveryManager.isEnabled;
 
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
@@ -40,50 +32,84 @@ class BluetoothViewModel extends BaseViewModel {
   BluetoothDevice? _selectedDevice;
   BluetoothDevice? get selectedDevice => _selectedDevice;
 
-  Future<void> initialize() async{
-    return refresh();
+  Future<void> initialize() async {
+    return isrefresh();
   }
 
   Future<void> startScan({ScanMode scanMode = ScanMode.balanced}) async {
-    await _bluetoothDiscoverManager.startScan(timeout: Duration(seconds: 5), scanMode: scanMode);
+    await _bluetoothDiscoveryManager.startScan(
+        timeout: Duration(seconds: 5), scanMode: scanMode);
   }
 
   Future<void> stopScan() async {
-    await _bluetoothDiscoverManager.stopScan();
+    await _bluetoothDiscoveryManager.stopScan();
   }
 
   Future<void> connect(BluetoothDevice device) async {
-    await _deviceManager.connect(device);
+    await _bluetoothDiscoveryManager.stopScan();
+
+    _isRefreshing = false;
+    _selectedDevice = device;
+    notifyListeners();
+
+    try {
+      await _bluetoothDeviceManager.connect(device);
+    } on TimeoutException catch (e) {
+      await disconnect();
+      log(e.message!);
+    }
   }
 
   Future<void> disconnect() async {
     await _bluetoothDeviceManager.disconnect();
+    _selectedDevice = null;
+    notifyListeners();
   }
 
-  Future<void> write(Guid uuid, List<int> value) async {
-    await _robotInteractor.write(uuid, value);
+  Future<void> isrefresh() async {
+    if (!await isRefreshable()) return;
+
+    await _bluetoothDiscoveryManager.stopScan();
+    _isRefreshing = true;
+    notifyListeners();
+
+    await _bluetoothDiscoveryManager.startScan(timeout: refreshTimeout);
+    _isRefreshing = false;
+    notifyListeners();
   }
 
-  Future<List<int>> read(Guid uuid) async {
-    return await _robotInteractor.read(uuid);
+  Future<bool> isRefreshable() async {
+    if (!await _bluetoothDiscoveryManager.requestPermissions()) {
+      _snackbar("Permission", "Permission denied.",
+          SnackBarAction(label: "App settings", onPressed: () => {}));
+      return false;
+    }
+
+    if (!await _bluetoothDiscoveryManager.isAvailable) {
+      _snackbar("Bluetooth", "Bluetooth adapter missing.",
+          SnackBarAction(label: "Bluetooth settings", onPressed: () => {}));
+      return false;
+    }
+
+    if (!await _bluetoothDiscoveryManager.isEnabled) {
+      _snackbar("Bluetooth", "Bluetooth not enabled.",
+          SnackBarAction(label: "Bluetooth settings", onPressed: () => {}));
+      return false;
+    }
+
+    return true;
   }
 
-  Future<bool> setNotify(Guid uuid, bool state) async {
-    return await _robotInteractor.setNotify(uuid, state);
+  void _snackbar(String title, String message, SnackBarAction action) {
+    if (!Get.isSnackbarOpen) {
+      Get.rawSnackbar(
+        padding:
+            const EdgeInsets.only(left: 20, right: 30, top: 16, bottom: 16),
+        title: title,
+        message: message,
+        mainButton: ElevatedButton(
+            onPressed: action.onPressed, child: Text(action.label)),
+      );
+    }
   }
-
-  Stream<List<int>> value(Guid uuid) {
-    return _robotInteractor.value(uuid);
-  }
-
-  Future<void> disconnectAll() async {
-    await _bluetoothDeviceManager.disconnectAll();
-  }
-
-  Future<void> connectAll() async {
-    await _bluetoothDeviceManager.connectAll();
-  }
-
-  Future
-  
 }

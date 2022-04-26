@@ -1,44 +1,45 @@
 import 'dart:async';
 
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:ims/src/app/bluetooth/bluetooth_controller.dart';
-import 'package:ims/src/app/bluetooth/controllers/robot_controller.dart';
-import 'package:ims/src/app/bluetooth/bluetooth_characteristics.dart';
+import 'package:int_app/src/app/bluetooth/interactors/robot_interactor.dart';
+import '../../../util/bluetooth_characteristics.dart';
+import '../bluetooth_controller.dart';
 
 class RobotController extends BluetoothController {
-  RobotInteractor _interactor;
+  final RobotInteractor _interactor;
 
-  StreamSubscription<List<int>> _collissionSubscription;
-  late StreamController<int> _collissionController = StreamController<int>();
+  StreamSubscription<List<int>>? _collisionSubscription;
+  late StreamController<int> _collisionController = StreamController<int>();
 
   RobotController(this._interactor) : super(_interactor) {}
 
   Future<void> setAcceleration(int acceleration) {
-    return this._interactor.write(Guid(ROBOT_ACCELERATION_UUID), [acceleration.toInt()]);
+    return _interactor.write(Guid(ROBOT_ACCELERATION_UUID), [acceleration]);
   }
 
   Future<void> setSteering(int steering) {
-    return this._interactor.write(Guid(ROBOT_STEERING_UUID), [steering.toInt()]);
+    return _interactor.write(Guid(ROBOT_STEERING_UUID), [steering]);
   }
 
-  Future<void> setAutoMode() {
-    return this._interactor.write(Guid(ROBOT_MODE_UUID), [0]);
+  Future<void> setAutomode() {
+    return _interactor.write(Guid(ROBOT_MODE_UUID), [0]);
   }
 
-  Future<bool> startCollission() async {
-    return this._interactor.setNotifyValue(Guid(ROBOT_COLLISION_UUID), true);
-  }
+  /*Future<bool> startCollision() async {
+    return _interactor.setNotifyValue(Guid(ROBOT_COLLISION_UUID), true);
+  }*/
 
-  Future<bool> stopCollission() async {
-    _collissionSubscription?.cancel();
-    return this._interactor.setNotifyValue(Guid(ROBOT_COLLISION_UUID), false);
-  }
+  /*Future<bool> stopCollision() async {
+    _collisionSubscription?.cancel();
+    return _interactor.setNotifyValue(Guid(ROBOT_COLLISION_UUID), false);
+  }*/
 
-  Stream<int> collissionResults() {
-    _collissionSubscription = this._interactor.value(Guid(ROBOT_COLLISION_UUID)).listen((event) {
-      if (event.isNotEmpty) _collissionController.add(event.first);
+  /*Stream<int> collisionResults() {
+    _collisionSubscription =
+        _interactor.value(Guid(ROBOT_COLLISION_UUID)).listen((event) {
+      if (event.isNotEmpty) _collisionController.add(event.first);
     });
 
-    return _collissionController.stream.asBroadcastStream();
-  }
+    return _collisionController.stream.asBroadcastStream();
+  }*/
 }

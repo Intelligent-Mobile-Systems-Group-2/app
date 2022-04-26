@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:ims/src/app/bluetooth/bluetooth_interactor.dart';
+import 'package:int_app/src/app/bluetooth/bluetooth_controller.dart';
+import 'package:int_app/src/app/bluetooth/bluetooth_interactor.dart';
 
 //create flutter class for bluetooth connection
-class BluetoothDeviceManager<Interactor extends BluetoothInteractor, Controller extends BluetoothController> {
-
-
+class BluetoothDeviceManager<Interactor extends BluetoothInteractor,
+    Controller extends BluetoothController> {
   BluetoothDevice? _device;
   Interactor? _interactor;
   Controller? _controller;
@@ -16,14 +16,19 @@ class BluetoothDeviceManager<Interactor extends BluetoothInteractor, Controller 
   Interactor? get interactor => _interactor;
   Controller? get controller => _controller;
 
-  Future<void> connect(BluetoothDevice device, {Duration timeout = const Duration(seconds:10)}) async {
+  get scanResults => null;
 
-    await device.connect(timeout, onTimeout: => {throw TimeoutException("Timeout on device connect.")});
+  Future<void> connect(BluetoothDevice device,
+      {Duration timeout = const Duration(seconds: 10)}) async {
+    await device.connect().timeout(timeout,
+        onTimeout: () =>
+            {throw TimeoutException("Timeout on device connect.")});
 
-    final service = await device.discoverServices();
+    final services = await device.discoverServices();
     _device = device;
-    _interactor = BluetoothInteractor.createInstance<Interactor>(services)!;
-    _controller = BluetoothController.createInstance<Controller, Interactor>(_interactor)!;
+    _interactor = BluetoothInteractor.createInstance(services)!;
+    _controller = BluetoothController.createInstance<Controller, Interactor>(
+        _interactor!)!;
   }
 
   //create bluetooth device
