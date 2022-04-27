@@ -37,6 +37,8 @@ dependencies:
   joystick: ^1.1.0
   control_pad: ^1.1.1+1
   flutter_blue: ^0.8.0
+  async: ^2.8.2
+  http: ^0.13.4
 
 
 dev_dependencies:
