@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:int_app/src/app/view-model/bluetooth_view_model.dart';
-import 'package:int_app/src/app/view/bluetooth-view/device_list.dart';
+import 'package:int_app/src/app/view/bluetooth/device_list.dart';
 import 'package:stacked/stacked.dart';
 
 class Body extends ViewModelBuilderWidget<BluetoothViewModel> {

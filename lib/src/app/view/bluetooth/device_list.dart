@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:int_app/src/app/view-model/bluetooth_view_model.dart';
-import 'package:int_app/src/app/view/bluetooth-view/device_card.dart';
+import 'package:int_app/src/app/view/bluetooth/device_card.dart';
 import 'package:stacked/stacked.dart';
 
 class DeviceList extends ViewModelBuilderWidget<BluetoothViewModel> {

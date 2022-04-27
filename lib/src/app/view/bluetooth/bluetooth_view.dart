@@ -3,7 +3,7 @@ import 'package:stacked/stacked.dart';
 import 'package:system_settings/system_settings.dart';
 
 import 'package:int_app/src/app/view-model/bluetooth_view_model.dart';
-import 'package:int_app/src/app/view/bluetooth-view/body.dart';
+import 'package:int_app/src/app/view/bluetooth/body.dart';
 
 class BluetoothView extends ViewModelBuilderWidget<BluetoothViewModel> {
   @override
