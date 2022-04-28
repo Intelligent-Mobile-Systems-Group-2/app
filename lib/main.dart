@@ -25,7 +25,7 @@ class ExampleApp extends StatelessWidget {
     return MaterialApp(
       title: 'main',
 //      home: BluetoothView(),
-      home: HomePage(),
+      home: BluetoothView(),
     );
   }
 }
