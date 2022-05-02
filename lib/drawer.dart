@@ -1,52 +1,46 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_draw/flutter_draw.dart';
 
-class DrawExample extends StatefulWidget {
+void main() => runApp(MyApp());
+
+class MyApp extends StatefulWidget {
   @override
-  _DrawExampleState createState() => _DrawExampleState();
+  State<StatefulWidget> createState() => MyAppState();
 }
 
-class _DrawExampleState extends State<DrawExample> {
-  File _drawImage;
+class MyAppState extends State<MyApp> {
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              _drawImage != null ? Image.file(_drawImage) : Container(),
-              RaisedButton(
-                onPressed: () {
-                  getDrawing();
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                },
-                child: Text("Draw"),
-              )
-            ],
-          ),
+    return new MaterialApp(
+      theme: ThemeData(
+        // Define the default Brightness and Colors
+        brightness: Brightness.dark,
+        primaryColor: Colors.lightBlue[800],
+        accentColor: Colors.cyan[600],
+      ),
+      home: Scaffold(
+        key: scaffoldKey,
+        drawer: new Drawer(
+          child: new ListView(),
+        ),
+        body: Stack(
+          children: <Widget>[
+            new Center(
+                child: new Column(
+                  children: <Widget>[],
+                )),
+            Positioned(
+              left: 10,
+              top: 20,
+              child: IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () => scaffoldKey.currentState.openDrawer(),
+              ),
+            ),
+          ],
         ),
       ),
     );
-  }
-
-  Future<void> getDrawing() {
-    final getDraw =
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return HomePage();
-    })).then((getDraw) {
-      if (getDraw != null) {
-        setState(() {
-          _drawImage = getDraw;
-        });
-      }
-    }).catchError((er) {
-      print(er);
-    });
   }
 }
