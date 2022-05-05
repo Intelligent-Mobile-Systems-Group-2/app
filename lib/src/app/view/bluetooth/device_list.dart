@@ -18,12 +18,19 @@ class DeviceList extends ViewModelBuilderWidget<BluetoothViewModel> {
     return StreamBuilder<List<ScanResult>>(
       stream: viewModel.scanResults,
       builder: (context, AsyncSnapshot<List<ScanResult>> snapshot) {
-        return ListView.builder(
-          itemCount: snapshot.data?.length ?? 0,
-          itemBuilder: (_, index) {
-            return DeviceCard(viewModel, snapshot.data![index].device);
-          },
-        );
+        final mowerDevice = snapshot.data!
+            .where((element) => element.device.id.id == "B8:27:EB:EA:63:31");
+
+        if (snapshot.data!.contains(mowerDevice)) {
+          return ListView.builder(
+            itemCount: snapshot.data?.length ?? 0,
+            itemBuilder: (_, index) {
+              return DeviceCard(viewModel, snapshot.data![index].device);
+            },
+          );
+        } else {
+          return const SizedBox(height: 0);
+        }
       },
     );
   }
