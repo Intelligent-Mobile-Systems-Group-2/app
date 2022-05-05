@@ -9,7 +9,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Color.fromARGB(255, 18, 32, 47)),
+      theme: ThemeData.dark()
+          .copyWith(scaffoldBackgroundColor: Color.fromARGB(255, 18, 32, 47)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
@@ -35,7 +36,7 @@ class PlayButton extends StatefulWidget {
   final VoidCallback onPressed;
 
   PlayButton({
-    @required this.onPressed,
+    required this.onPressed,
     this.initialIsPlaying = false,
     this.playIcon = const Icon(Icons.play_arrow),
     this.pauseIcon = const Icon(Icons.pause),
@@ -49,43 +50,43 @@ class _PlayButtonState extends State<PlayButton> with TickerProviderStateMixin {
   static const _kToggleDuration = Duration(milliseconds: 300);
   static const _kRotationDuration = Duration(seconds: 5);
 
-  bool isPlaying;
+  bool isPlaying = false;
 
   // rotation and scale animations
-  AnimationController _rotationController;
-  AnimationController _scaleController;
+  AnimationController? _rotationController;
+  AnimationController? _scaleController;
   double _rotation = 0;
   double _scale = 0.85;
 
-  bool get _showWaves => !_scaleController.isDismissed;
+  bool get _showWaves => _scaleController?.isDismissed ?? false;
 
-  void _updateRotation() => _rotation = _rotationController.value * 2 * pi;
-  void _updateScale() => _scale = (_scaleController.value * 0.2) + 0.85;
+  void _updateRotation() =>
+      _rotation = (_rotationController?.value ?? 0) * 2 * pi;
+  void _updateScale() => _scale = ((_scaleController?.value ?? 0) * 0.2) + 0.85;
 
   @override
   void initState() {
     isPlaying = widget.initialIsPlaying;
     _rotationController =
-    AnimationController(vsync: this, duration: _kRotationDuration)
-      ..addListener(() => setState(_updateRotation))
-      ..repeat();
+        AnimationController(vsync: this, duration: _kRotationDuration)
+          ..addListener(() => setState(_updateRotation))
+          ..repeat();
 
     _scaleController =
-    AnimationController(vsync: this, duration: _kToggleDuration)
-      ..addListener(() => setState(_updateScale));
+        AnimationController(vsync: this, duration: _kToggleDuration)
+          ..addListener(() => setState(_updateScale));
 
     super.initState();
   }
 
   void _onToggle() {
-    setState(() => isPlaying = !isPlaying);
+    setState(() => isPlaying = isPlaying);
 
-    if (_scaleController.isCompleted) {
-      _scaleController.reverse();
+    if (_scaleController!.isCompleted) {
+      _scaleController?.reverse();
     } else {
-      _scaleController.forward();
+      _scaleController?.forward();
     }
-
     widget.onPressed();
   }
 
@@ -108,8 +109,14 @@ class _PlayButtonState extends State<PlayButton> with TickerProviderStateMixin {
         children: [
           if (_showWaves) ...[
             Blob(color: Color(0xff0092ff), scale: _scale, rotation: _rotation),
-            Blob(color: Color(0xff4ac7b7), scale: _scale, rotation: _rotation * 2 - 30),
-            Blob(color: Color(0xffa4a6f6), scale: _scale, rotation: _rotation * 3 - 45),
+            Blob(
+                color: Color(0xff4ac7b7),
+                scale: _scale,
+                rotation: _rotation * 2 - 30),
+            Blob(
+                color: Color(0xffa4a6f6),
+                scale: _scale,
+                rotation: _rotation * 3 - 45),
           ],
           Container(
             constraints: BoxConstraints.expand(),
@@ -129,8 +136,8 @@ class _PlayButtonState extends State<PlayButton> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _scaleController.dispose();
-    _rotationController.dispose();
+    _scaleController?.dispose();
+    _rotationController?.dispose();
     super.dispose();
   }
 }
@@ -138,7 +145,7 @@ class _PlayButtonState extends State<PlayButton> with TickerProviderStateMixin {
 class Blob extends StatelessWidget {
   final double rotation;
   final double scale;
-  final Color color;
+  final Color? color;
 
   const Blob({this.color, this.rotation = 0, this.scale = 1});
 

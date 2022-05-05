@@ -28,14 +28,14 @@ class MyAppState extends State<MyApp> {
           children: <Widget>[
             new Center(
                 child: new Column(
-                  children: <Widget>[],
-                )),
+              children: <Widget>[],
+            )),
             Positioned(
               left: 10,
               top: 20,
               child: IconButton(
                 icon: Icon(Icons.menu),
-                onPressed: () => scaffoldKey.currentState.openDrawer(),
+                onPressed: () => scaffoldKey.currentState?.openDrawer(),
               ),
             ),
           ],
