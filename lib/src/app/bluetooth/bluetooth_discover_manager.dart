@@ -13,7 +13,9 @@ class BluetoothDiscoverManager {
   Future<bool> requestPermissions() async {
     try {
       (await [
-        Permission.bluetooth,
+        Permission.bluetoothConnect,
+        Permission.bluetoothAdvertise,
+        Permission.bluetoothScan,
         Permission.location,
       ].request())
           .values

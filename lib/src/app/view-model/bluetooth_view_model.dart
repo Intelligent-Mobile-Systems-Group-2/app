@@ -93,14 +93,12 @@ class BluetoothViewModel extends BaseViewModel {
 
   void _snackbar(String title, String message, SnackBarAction action) {
     if (Get.isSnackbarOpen) {
-      Get.rawSnackbar(
-        padding:
-            const EdgeInsets.only(left: 20, right: 30, top: 16, bottom: 16),
-        title: title,
-        message: message,
-        mainButton: ElevatedButton(
-            onPressed: action.onPressed, child: Text(action.label)),
-      );
+      void _snackbar(String title, String message, SnackBarAction action) {
+        Get.snackbar(
+          title,
+          message,
+        );
+      }
     }
   }
 }
