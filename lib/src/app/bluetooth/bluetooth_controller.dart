@@ -11,5 +11,6 @@ class BluetoothController<Interactor extends BluetoothInteractor> {
       case RobotController:
         return RobotController(interactor as RobotInteractor) as Controller;
     }
+    return null;
   }
 }

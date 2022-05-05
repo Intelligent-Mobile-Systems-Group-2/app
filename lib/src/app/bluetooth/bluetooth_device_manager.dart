@@ -16,8 +16,6 @@ class BluetoothDeviceManager<Interactor extends BluetoothInteractor,
   Interactor? get interactor => _interactor;
   Controller? get controller => _controller;
 
-  get scanResults => null;
-
   Future<void> connect(BluetoothDevice device,
       {Duration timeout = const Duration(seconds: 10)}) async {
     await device.connect().timeout(timeout,
@@ -26,7 +24,7 @@ class BluetoothDeviceManager<Interactor extends BluetoothInteractor,
 
     final services = await device.discoverServices();
     _device = device;
-    _interactor = BluetoothInteractor.createInstance(services)!;
+    _interactor = BluetoothInteractor.createInstance<Interactor>(services)!;
     _controller = BluetoothController.createInstance<Controller, Interactor>(
         _interactor!)!;
   }
