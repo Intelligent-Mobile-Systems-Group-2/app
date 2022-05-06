@@ -19,7 +19,7 @@ class DeviceList extends ViewModelBuilderWidget<BluetoothViewModel> {
       stream: viewModel.scanResults,
       builder: (context, AsyncSnapshot<List<ScanResult>> snapshot) {
         return ListView.builder(
-          itemCount: 1,
+          itemCount: snapshot.data?.length ?? 0,
           itemBuilder: (_, index) {
             return DeviceCard(viewModel, snapshot.data![index].device);
           },

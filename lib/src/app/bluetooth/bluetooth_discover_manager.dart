@@ -1,17 +1,16 @@
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../view-model/bluetooth_view_model.dart';
 
 class BluetoothDiscoverManager {
   Stream<BluetoothState> get state => FlutterBlue.instance.state;
   Stream<List<ScanResult>> get scanResults =>
       FlutterBlue.instance.scanResults.asBroadcastStream();
 
-  Future<BluetoothDevice> foundDevice(String deviceId) async {
   var sub = FlutterBlue.instance.scanResults.listen((results) {
     for (var result in results) {
-      if (result.device.id.id == "BE:AC:10:00:00:01") {
-        return result.device;
+      if (result.device.id.id == "B8:27:EB:EA:63:31") {
+        print("Found device: ${result.device.id.id}");
+        result.device.connect();
       }
     }
   });
