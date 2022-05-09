@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:int_app/src/app/bluetooth/bluetooth_discover_manager.dart';
 import 'package:stacked/stacked.dart';
 
 import 'package:int_app/src/app/view-model/bluetooth_view_model.dart';
