@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' show pi;
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,14 +15,34 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
-          child: SizedBox(
-            height: 200,
-            width: 200,
-            child: PlayButton(
-              pauseIcon: Icon(Icons.pause, color: Colors.black, size: 90),
-              playIcon: Icon(Icons.play_arrow, color: Colors.black, size: 90),
-              onPressed: () {},
-            ),
+        /*child: SizedBox(
+          height: 200,
+          width: 200,
+          child: PlayButton(
+            pauseIcon: Icon(Icons.pause, color: Colors.black, size: 90),
+            playIcon: Icon(Icons.play_arrow, color: Colors.black, size: 90),
+            onPressed: () {},
+          ),*/
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 0),
+                //Switch toogle implementation
+                child: LiteRollingSwitch(
+                  value: true,
+                  textOn: 'Auto',
+                  textOff: 'Remote',
+                  colorOn: Colors.green,
+                  colorOff: Colors.grey,
+                  iconOn: Icons.power_settings_new,
+                  iconOff: Icons.power_settings_new,
+                  onChanged: (bool state) {
+                    print('Switch turned ${(state) ? 'on' : 'off'}');
+                  },
+                ),
+              )
+            ],
           ),
         ),
       ),
