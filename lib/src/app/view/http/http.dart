@@ -5,11 +5,22 @@ import 'dart:convert';
 
 import 'package:int_app/src/app/view/http/data_model.dart';
 
-const baseUrl = "http://ims.matteobernardi.fr/boundary-collision";
+const baseUrl = "http://ims.matteobernardi.fr";
+const testURL = "https://jsonplaceholder.typicode.com/users";
 
 class API {
   static Future getUsers() {
-    var url = baseUrl;
+    var url = testURL;
+    return http.get(Uri.parse(url));
+  }
+
+  static Future getObjectCollision() {
+    var url = baseUrl + "/object-collision/";
+    return http.get(Uri.parse(url));
+  }
+
+  static Future getBoundaryCollision() {
+    var url = baseUrl + "/boundary-collision/";
     return http.get(Uri.parse(url));
   }
 }
@@ -21,6 +32,8 @@ class MyListScreen extends StatefulWidget {
 
 class _MyListScreenState extends State {
   var users = new List<User>.empty();
+  // var objectCollisions = new List<ObjectCollision>.empty();
+  // var boundaryCollisions = new List<BoundaryCollision>.empty();
 
   _getUsers() {
     API.getUsers().then((response) {
@@ -31,6 +44,28 @@ class _MyListScreenState extends State {
       });
     });
   }
+
+  // //Get and add object collision to list
+  // _getObjectCollision() {
+  //   API.getObjectCollision().then((response) {
+  //     setState(() {
+  //       Iterable list = json.decode(response.body);
+  //       print(response.body);
+  //       objectCollisions = list.map((model) => ObjectCollision.fromJson(model)).toList();
+  //     });
+  //   });
+  // }
+
+  // //Get and add boundary collision to list
+  //  _getBoundaryCollision() {
+  //   API.getObjectCollision().then((response) {
+  //     setState(() {
+  //       Iterable list = json.decode(response.body);
+  //       print(response.body);
+  //       boundaryCollisions = list.map((model) => BoundaryCollision.fromJson(model)).toList();
+  //     });
+  //   });
+  // }
 
   initState() {
     super.initState();
@@ -51,10 +86,14 @@ class _MyListScreenState extends State {
           itemCount: users.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(users[index].time),
-              subtitle: Text(users[index].x),
+              title: Text(users[index].name),
+              subtitle: Text(users[index].email)
+              
             );
           },
         ));
   }
+}
+
+class Boundary {
 }
