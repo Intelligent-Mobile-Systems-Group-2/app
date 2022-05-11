@@ -47,6 +47,7 @@ dependencies:
   scoped_model: ^1.1.0
   flutter_reactive_ble: ^5.0.2
   collection: ^1.15.0
+  platform: ^3.1.0
 
 dev_dependencies:
   flutter_test:

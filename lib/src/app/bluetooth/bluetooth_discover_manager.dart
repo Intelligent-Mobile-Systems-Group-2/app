@@ -1,37 +1,33 @@
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:stacked/stacked.dart';
-import '../view-model/bluetooth_view_model.dart';
 import '../view/home/home_page.dart';
+import './bluetooth_device_manager.dart';
 
 class BluetoothDiscoverManager {
   Stream<BluetoothState> get state => FlutterBlue.instance.state;
   Stream<List<ScanResult>> get scanResults =>
       FlutterBlue.instance.scanResults.asBroadcastStream();
+  BluetoothDeviceManager _deviceManager = BluetoothDeviceManager();
 
-  var sub = FlutterBlue.instance.scanResults.listen((results) async {
-    for (var result in results) {
-      if (result.device.id.id == "38:53:9C:86:C3:10") {
-        print("Found device: ${result.device.id.id}");
-        await result.device.connect();
-
-        Get.offAll(HomePage());
-      } else if (result.device.id.id == "14:60:CB:1B:4A:03") {
-        print("Found device: ${result.device.id.id}");
-        result.device.connect();
+  Future<BluetoothDevice?> foundResults() async {
+    await FlutterBlue.instance.scanResults.listen((results) {
+      try {
+        for (ScanResult result in results) {
+          print(result.device.name);
+          if (result.device.id.id == "BE:AC:10:00:00:01") {
+            print("Found device: ${result.device.id.id}");
+            _deviceManager.connect(result.device);
+            stopScan();
+          }
+        }
+      } catch (e) {
+        print(e);
+        rethrow;
       }
-    }
-  });
-  //B8:27:EB:EA:63:31
-
-  /*ElevatedButton button(BluetoothViewModel viewModel, BluetoothDevice device) {
-    return ElevatedButton(
-      child: Text("Connect"),
-      style: ButtonStyle(),
-      onPressed: () async => viewModel.connect(_device),
-    );
-  }*/
+    });
+    //B8:27:EB:EA:63:31
+  }
 
   Future<bool> get isAvailable => FlutterBlue.instance.isAvailable;
 

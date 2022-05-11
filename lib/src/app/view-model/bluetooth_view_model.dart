@@ -35,6 +35,7 @@ class BluetoothViewModel extends BaseViewModel {
     return refresh();
   }
 
+
   Future<void> connect(BluetoothDevice device) async {
     await _discoveryManager.stopScan();
 
