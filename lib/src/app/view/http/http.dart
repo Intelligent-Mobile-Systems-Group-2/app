@@ -28,30 +28,24 @@ class MyListScreen extends StatefulWidget {
 }
 
 class _MyListScreenState extends State {
-  var Collisions = new List<CollisionModel>.empty();
-//  var boundaryCollisions = new List<BoundaryCollision>.empty();
+  var boundryCollisions = List<CollisionModel>.empty();
+  var objectCollisions = List<CollisionModel>.empty();
 
-  //Get and add object collision to list
-  _getObjectCollision() {
-    API.getObjectCollision().then((response) {
-      setState(() {
-        Iterable list = json.decode(response.body);
-        print('object collision:');
-        print(response.body);
-        Collisions =
-            list.map((model) => CollisionModel.fromJson(model)).toList();
-      });
-    });
-  }
-
-  // //Get and add boundary collision to list
-  _getBoundaryCollision() {
+  _getCollition() {
+    // get bondary collison
     API.getBoundaryCollision().then((response) {
       setState(() {
         Iterable list = json.decode(response.body);
-        print('boundary collision:');
-        print(response.body);
-        Collisions =
+        boundryCollisions =
+            list.map((model) => CollisionModel.fromJson(model)).toList();
+      });
+    });
+
+    // get object collition
+    API.getObjectCollision().then((response) {
+      setState(() {
+        Iterable list = json.decode(response.body);
+        objectCollisions =
             list.map((model) => CollisionModel.fromJson(model)).toList();
       });
     });
@@ -61,12 +55,7 @@ class _MyListScreenState extends State {
 
   initState() {
     super.initState();
-    timer = Timer.periodic(
-        Duration(seconds: 5),
-        (Timer t) => {
-              _getBoundaryCollision(),
-              _getObjectCollision(),
-            });
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => _getCollition());
   }
 
   dispose() {
@@ -81,8 +70,11 @@ class _MyListScreenState extends State {
           title: Text("User List"),
         ),
         body: ListView.builder(
+//          itemCount: boundryCollisions.length,
           itemBuilder: (context, index) {
-            return ListTile();
+            return ListTile(
+//                title: Text(boundryCollisions[index].time)
+                );
           },
         ));
   }
