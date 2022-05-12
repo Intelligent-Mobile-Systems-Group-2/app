@@ -6,21 +6,18 @@ import 'dart:convert';
 import 'package:int_app/src/app/view/http/data_model.dart';
 
 const baseUrl = "http://ims.matteobernardi.fr";
-const testURL = "https://jsonplaceholder.typicode.com/users";
+DateTime now = DateTime.now();
+String convertedDateTime =
+    "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
 
 class API {
-  static Future getUsers() {
-    var url = testURL;
-    return http.get(Uri.parse(url));
-  }
-
   static Future getObjectCollision() {
-    var url = baseUrl + "/object-collision/";
+    var url = baseUrl + "/object-collision/?date=" + convertedDateTime;
     return http.get(Uri.parse(url));
   }
 
   static Future getBoundaryCollision() {
-    var url = baseUrl + "/boundary-collision/";
+    var url = baseUrl + "/boundary-collision/?date=" + convertedDateTime;
     return http.get(Uri.parse(url));
   }
 }
@@ -31,48 +28,49 @@ class MyListScreen extends StatefulWidget {
 }
 
 class _MyListScreenState extends State {
-  var users = new List<User>.empty();
-  // var objectCollisions = new List<ObjectCollision>.empty();
-  // var boundaryCollisions = new List<BoundaryCollision>.empty();
+  var Collisions = new List<CollisionModel>.empty();
+//  var boundaryCollisions = new List<BoundaryCollision>.empty();
 
-  _getUsers() {
-    API.getUsers().then((response) {
+  //Get and add object collision to list
+  _getObjectCollision() {
+    API.getObjectCollision().then((response) {
       setState(() {
         Iterable list = json.decode(response.body);
+        print('object collision:');
         print(response.body);
-        users = list.map((model) => User.fromJson(model)).toList();
+        Collisions =
+            list.map((model) => CollisionModel.fromJson(model)).toList();
       });
     });
   }
 
-  // //Get and add object collision to list
-  // _getObjectCollision() {
-  //   API.getObjectCollision().then((response) {
-  //     setState(() {
-  //       Iterable list = json.decode(response.body);
-  //       print(response.body);
-  //       objectCollisions = list.map((model) => ObjectCollision.fromJson(model)).toList();
-  //     });
-  //   });
-  // }
-
   // //Get and add boundary collision to list
-  //  _getBoundaryCollision() {
-  //   API.getObjectCollision().then((response) {
-  //     setState(() {
-  //       Iterable list = json.decode(response.body);
-  //       print(response.body);
-  //       boundaryCollisions = list.map((model) => BoundaryCollision.fromJson(model)).toList();
-  //     });
-  //   });
-  // }
+  _getBoundaryCollision() {
+    API.getBoundaryCollision().then((response) {
+      setState(() {
+        Iterable list = json.decode(response.body);
+        print('boundary collision:');
+        print(response.body);
+        Collisions =
+            list.map((model) => CollisionModel.fromJson(model)).toList();
+      });
+    });
+  }
+
+  Timer? timer;
 
   initState() {
     super.initState();
-    _getUsers();
+    timer = Timer.periodic(
+        Duration(seconds: 5),
+        (Timer t) => {
+              _getBoundaryCollision(),
+              _getObjectCollision(),
+            });
   }
 
   dispose() {
+    timer?.cancel();
     super.dispose();
   }
 
@@ -83,17 +81,9 @@ class _MyListScreenState extends State {
           title: Text("User List"),
         ),
         body: ListView.builder(
-          itemCount: users.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(users[index].name),
-              subtitle: Text(users[index].email)
-              
-            );
+            return ListTile();
           },
         ));
   }
-}
-
-class Boundary {
 }
