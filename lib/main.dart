@@ -2,15 +2,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
-import 'package:control_pad/views/joystick_view.dart';
-import 'dart:async';
-import 'package:flutter/services.dart';
 import 'package:int_app/src/app/view/home/joystick.dart';
-import 'package:int_app/src/app/view/bluetooth/bluetooth_view.dart';
 import 'src/app/bluetooth/bluetooth_device_manager.dart';
 import 'src/app/bluetooth/interactors/robot_interactor.dart';
 import 'src/app/bluetooth/controllers/robot_controller.dart';
 import 'src/app/bluetooth/bluetooth_discover_manager.dart';
+import 'dart:async';
 
 GetIt getIt = GetIt.instance;
 
@@ -19,12 +16,6 @@ void main() {
   getIt.registerSingleton(BluetoothDiscoverManager());
   getIt.registerSingleton(
       BluetoothDeviceManager<RobotInteractor, RobotController>());
-  runApp(ExampleApp());
-}
-
-class ExampleApp extends StatelessWidget {
-
-Future<void> main() async {
   runApp(MainScreen());
 }
 
@@ -35,7 +26,6 @@ class MainScreen extends StatelessWidget {
       title: 'main',
 //      home: BluetoothView(),
       home: JoyPad(),
-
     );
   }
 }

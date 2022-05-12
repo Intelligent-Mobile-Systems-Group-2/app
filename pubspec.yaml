@@ -45,7 +45,6 @@ dependencies:
   stacked: ^2.3.3
   synchronized: ^3.0.0+2
   system_settings: ^2.1.0
-  flutter_bluetooth_serial: ^0.4.0
   scoped_model: ^1.1.0
   flutter_reactive_ble: ^5.0.2
   collection: ^1.15.0
