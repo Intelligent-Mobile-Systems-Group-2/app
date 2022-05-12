@@ -6,6 +6,8 @@ A intelligent mobile system project.
 
 This project is a starting point for a Flutter application.
 
+When cloning repository, begin with doing a [flutter packages get] following with a [flutter pub get].
+
 A few resources to get you started if this is your first Flutter project:
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)

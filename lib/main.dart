@@ -1,7 +1,11 @@
 //@dart=2.9
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
+import 'package:get_it/get_it.dart';
+import 'package:control_pad/views/joystick_view.dart';
+import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:int_app/src/app/view/home/joystick.dart';
 import 'package:int_app/src/app/view/bluetooth/bluetooth_view.dart';
 import 'src/app/bluetooth/bluetooth_device_manager.dart';
 import 'src/app/bluetooth/interactors/robot_interactor.dart';
@@ -19,11 +23,19 @@ void main() {
 }
 
 class ExampleApp extends StatelessWidget {
+
+Future<void> main() async {
+  runApp(MainScreen());
+}
+
+class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'main',
-      home: BluetoothView(),
+//      home: BluetoothView(),
+      home: JoyPad(),
+
     );
   }
 }
