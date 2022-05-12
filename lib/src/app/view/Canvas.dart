@@ -12,29 +12,41 @@ class MowerMap extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    print(size);
-
+    //Center the origin point
     canvas.translate((size.width / 2), (size.height / 2));
+
+    //Create painters
     final paint = Paint()
-      ..color = Colors.red
-      ..strokeWidth = 4.0
+      ..color = Colors.grey
+      ..strokeWidth = 5.0
       ..strokeCap = StrokeCap.round;
 
-    List<DrawModel> pointsListScaled = scalePoints(size, pointsList);
+    final dotPaint = Paint()
+      ..color = Colors.redAccent
+      ..strokeWidth = 15.0
+      ..strokeCap = StrokeCap.round;
 
-    for (int i = 0; i < pointsList.length; i++) {
-      print(
-          'Point: ${pointsList[i].offset}, Point scaled: ${pointsListScaled[i].offset}');
-    }
+    //Create lists and scale
+    List<DrawModel> pointsListScaled = scalePoints(size, pointsList);
+    List<Offset> offsetList = [];
+    List<Offset> objectList = [];
+
+    //Paint
     for (int i = 0; i < (pointsListScaled.length - 1); i++) {
+      //Draw lines
       if (pointsListScaled[i] != null && pointsListScaled[i + 1] != null) {
         canvas.drawLine(
             pointsListScaled[i].offset, pointsListScaled[i + 1].offset, paint);
       } else if (pointsListScaled[i] != null &&
           pointsListScaled[i + 1] == null) {
-        List<Offset> offsetList = [];
         offsetList.add(pointsListScaled[i].offset);
         canvas.drawPoints(PointMode.points, offsetList, paint);
+      }
+
+      //Draw dots
+      if (pointsListScaled[i].type == "Object") {
+        objectList.add(pointsListScaled[i].offset);
+        canvas.drawPoints(PointMode.points, objectList, dotPaint);
       }
     }
   }
@@ -48,7 +60,8 @@ class MowerMap extends CustomPainter {
 
 class DrawModel {
   final Offset offset;
-  DrawModel(this.offset);
+  final String type;
+  DrawModel(this.offset, this.type);
 }
 
 scalePoints(Size windowSize, List<DrawModel> pointsList) {
@@ -56,8 +69,8 @@ scalePoints(Size windowSize, List<DrawModel> pointsList) {
   final points = pointsList.map((e) => (e.offset * scaleVal) / 2);
 
   List<DrawModel> pointsListScaled = [];
-  for (var point in points) {
-    pointsListScaled.add(DrawModel(point));
+  for (int i = 0; i < pointsList.length; i++) {
+    pointsListScaled.add(DrawModel(points.elementAt(i), pointsList[i].type));
   }
   return pointsListScaled;
 }
@@ -65,6 +78,8 @@ scalePoints(Size windowSize, List<DrawModel> pointsList) {
 getScaleValue(Size windowSize, List<DrawModel> pointsList) {
   double highestWidth = 0;
   double highestHeight = 0;
+  double scale = 1;
+
   for (var point in pointsList) {
     if (point.offset.dx > highestWidth) {
       highestWidth = point.offset.dx;
@@ -73,9 +88,12 @@ getScaleValue(Size windowSize, List<DrawModel> pointsList) {
       highestHeight = point.offset.dy;
     }
   }
+
   if (highestHeight > highestWidth) {
-    return ((windowSize.height - 10) / highestHeight);
+    scale = ((windowSize.height - 15) / highestHeight);
   } else {
-    return ((windowSize.width - 10) / highestWidth);
+    scale = ((windowSize.width - 15) / highestWidth);
   }
+
+  return scale;
 }
