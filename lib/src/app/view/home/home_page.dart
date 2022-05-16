@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:control_pad/views/joystick_view.dart';
 import 'package:int_app/src/app/view/home/stop&startButton.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:int_app/src/app/view/bluetooth/ChatPage.dart';
 
 class HomePage extends StatelessWidget {
+  late ChatPage _chatPage;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
