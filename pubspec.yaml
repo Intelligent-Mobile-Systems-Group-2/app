@@ -39,6 +39,10 @@ dependencies:
   joystick: ^1.1.0
   control_pad: ^1.1.1+1
   flutter_blue: ^0.8.0
+  async: ^2.8.2
+  http: ^0.13.4
+  provider:
+  flutter_spinkit:
   permission_handler: ^9.2.0
   get: ^4.6.1
   get_it: ^7.2.0
