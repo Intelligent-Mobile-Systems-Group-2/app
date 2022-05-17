@@ -12,70 +12,40 @@ String convertedDateTime =
 
 class API {
   static Future getObjectCollision() {
-    var url = baseUrl + "/object-collision/?date=" + convertedDateTime;
+    var url = baseUrl + "/object-collision/?date=" + "2022-05-12";
     return http.get(Uri.parse(url));
   }
 
   static Future getBoundaryCollision() {
-    var url = baseUrl + "/boundary-collision/?date=" + convertedDateTime;
+    var url = baseUrl + "/boundary-collision/?date=" + "2022-05-12";
     return http.get(Uri.parse(url));
   }
 }
 
-class MyListScreen extends StatefulWidget {
-  @override
-  createState() => _MyListScreenState();
-}
-
-class _MyListScreenState extends State {
+Future<List<CollisionModel>> getCollision() async {
   var boundryCollisions = List<CollisionModel>.empty();
   var objectCollisions = List<CollisionModel>.empty();
+  var listOfCollisions = List<CollisionModel>.empty();
 
-  _getCollition() {
-    // get bondary collison
-    API.getBoundaryCollision().then((response) {
-      setState(() {
-        Iterable list = json.decode(response.body);
-        boundryCollisions =
-            list.map((model) => CollisionModel.fromJson(model)).toList();
-      });
-    });
+  // get bondary collison
+  await API.getBoundaryCollision().then((response) {
+    Iterable list = json.decode(response.body);
+    boundryCollisions =
+        list.map((model) => CollisionModel.fromJson(model)).toList();
+  });
 
-    // get object collition
-    API.getObjectCollision().then((response) {
-      setState(() {
-        Iterable list = json.decode(response.body);
-        objectCollisions =
-            list.map((model) => CollisionModel.fromJson(model)).toList();
-      });
-    });
-  }
+  // get object collition
+  await API.getObjectCollision().then((response) {
+    Iterable list = json.decode(response.body);
+    objectCollisions =
+        list.map((model) => CollisionModel.fromJson(model)).toList();
+  });
 
-  Timer? timer;
+  //Combine the two lists
+  listOfCollisions = [...objectCollisions, ...boundryCollisions];
 
-  initState() {
-    super.initState();
-    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => _getCollition());
-  }
+  //Sort by time
+  listOfCollisions.sort((a, b) => a.time.compareTo(b.time));
 
-  dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  build(context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("User List"),
-        ),
-        body: ListView.builder(
-//          itemCount: boundryCollisions.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-//                title: Text(boundryCollisions[index].time)
-                );
-          },
-        ));
-  }
+  return listOfCollisions;
 }

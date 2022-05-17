@@ -5,15 +5,15 @@ import 'dart:core';
 
 class CollisionModel {
   late String time;
-  late String x;
-  late String y;
-  late String? object;
+  late double x;
+  late double y;
+  late String object;
 
-  CollisionModel(String time, String x, String y, String object) {
+  CollisionModel(String time, String x, String y, String? object) {
     this.time = time;
-    this.x = x;
-    this.y = y;
-    this.object = object;
+    this.x = double.parse(x);
+    this.y = double.parse(y);
+    this.object = object!;
   }
 
   CollisionModel.fromJson(Map json)
