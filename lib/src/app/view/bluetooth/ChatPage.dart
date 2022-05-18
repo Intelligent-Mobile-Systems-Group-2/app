@@ -20,10 +20,6 @@ class _ChatPage extends State<ChatPage> {
   static final clientID = 0;
   BluetoothConnection? connection;
 
-  String _messageBuffer = '';
-
-  final TextEditingController textEditingController =
-      new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
 
   bool isConnecting = true;
@@ -102,8 +98,10 @@ class _ChatPage extends State<ChatPage> {
               iconOff: Icons.power_settings_new,
               onChanged: (bool state) {
                 if (state == true) {
+                  print(state);
                   _sendMessage("120 1");
                 } else {
+                  print(state);
                   _sendMessage("0");
                 }
               },
@@ -112,6 +110,7 @@ class _ChatPage extends State<ChatPage> {
               size: 250,
               onDirectionChanged: (double degree, double distance) {
                 _sendMessage(degree.toStringAsFixed(0) + ' 1');
+                print(degree.toStringAsFixed(0) + ' 1');
               },
             ),
           ],
@@ -122,7 +121,6 @@ class _ChatPage extends State<ChatPage> {
 
   void _sendMessage(String text) async {
     text = text.trim();
-    textEditingController.clear();
 
     if (text.length > 0) {
       try {
