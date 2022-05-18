@@ -20,56 +20,52 @@ class _MapState extends State<MapState> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Map"),
-        ),
         body: Center(
-          child: FutureBuilder<List<CollisionModel>>(
-            future: getCollision(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<CollisionModel> points = snapshot.data!;
-                print(points);
-                final List<DrawModel> pointsList = createDrawModelList(points);
-                final List<ListTile> objectList = createObjectList(points);
-                return Column(children: [
-                  // Map
-                  Container(
-                    height: 350,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        border: Border.all(
-                            color: const Color.fromARGB(255, 115, 115, 115),
-                            width: 5)),
-                    child: Center(
-                        child: Container(
-                      color: Colors.white,
-                      width: 300,
-                      height: 300,
-                      child: CustomPaint(
-                        painter: MowerMap(pointsList),
-                      ),
-                    )),
-                  ),
-                  // List
-                  Container(
+      child: FutureBuilder<List<CollisionModel>>(
+        future: getCollision(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<CollisionModel> points = snapshot.data!;
+            final List<DrawModel> pointsList = createDrawModelList(points);
+            final List<ListTile> objectList = createObjectList(points);
+            return Column(children: [
+              // Map
+              Container(
+                height: 350,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
-                    height: 250,
-                    width: double.infinity,
-                    child: ListView(
-                        children: ListTile.divideTiles(
-                                context: context, tiles: objectList)
-                            .toList()),
-                  )
-                ]);
-              } else {
-                return const CircularProgressIndicator();
-              }
-            },
-          ),
-        ));
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 115, 115, 115),
+                        width: 5)),
+                child: Center(
+                    child: Container(
+                  color: Colors.white,
+                  width: 300,
+                  height: 300,
+                  child: CustomPaint(
+                    painter: MowerMap(pointsList),
+                  ),
+                )),
+              ),
+              // List
+              Container(
+                color: Colors.white,
+                height: 250,
+                width: double.infinity,
+                child: ListView(
+                    children: ListTile.divideTiles(
+                            context: context, tiles: objectList)
+                        .toList()),
+              )
+            ]);
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
+      ),
+    ));
   }
 }
 
@@ -77,8 +73,8 @@ createDrawModelList(List<CollisionModel> points) {
   final List<DrawModel> pointList = [];
   for (final point in points) {
     try {
-      double xVal = point.x;
-      double yVal = point.y;
+      double xVal = double.parse(point.x);
+      double yVal = double.parse(point.y);
 
       String type = "Boundary";
       if (point.object == null) {

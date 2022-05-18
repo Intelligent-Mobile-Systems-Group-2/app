@@ -12,12 +12,12 @@ String convertedDateTime =
 
 class API {
   static Future getObjectCollision() {
-    var url = baseUrl + "/object-collision/?date=" + "2022-05-12";
+    var url = baseUrl + "/object-collision/?date=" + convertedDateTime;
     return http.get(Uri.parse(url));
   }
 
   static Future getBoundaryCollision() {
-    var url = baseUrl + "/boundary-collision/?date=" + "2022-05-12";
+    var url = baseUrl + "/boundary-collision/?date=" + convertedDateTime;
     return http.get(Uri.parse(url));
   }
 }

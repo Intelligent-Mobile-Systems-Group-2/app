@@ -5,14 +5,14 @@ import 'dart:core';
 
 class CollisionModel {
   late String time;
-  late double x;
-  late double y;
+  late String x;
+  late String y;
   late String object;
 
   CollisionModel(String time, String x, String y, String? object) {
     this.time = time;
-    this.x = double.parse(x);
-    this.y = double.parse(y);
+    this.x = x;
+    this.y = y;
     this.object = object!;
   }
 
