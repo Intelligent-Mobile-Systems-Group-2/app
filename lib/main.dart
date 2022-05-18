@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:int_app/src/app/view/bluetooth/MainPage.dart';
-import 'package:int_app/src/app/view/home/home_page.dart';
 import 'package:int_app/src/app/view/home/joystick.dart';
 import 'package:int_app/src/app/view/home/stop&startButton.dart';
 import 'dart:async';
