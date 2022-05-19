@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:int_app/src/app/view/Canvas.dart';
 import 'package:int_app/src/app/view/http/data_model.dart';
 import 'package:int_app/src/app/view/http/http.dart';
 
 class MapState extends StatefulWidget {
+  final BluetoothDevice server;
+
+  const MapState({required this.server});
+
   @override
   _MapState createState() => _MapState();
 }

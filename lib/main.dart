@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:control_pad/views/joystick_view.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:int_app/src/app/view/bluetooth/MainPage.dart';
 import 'package:int_app/src/app/view/home/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
 import 'package:get_it/get_it.dart';
-import 'package:int_app/src/app/view/bluetooth/MainPage.dart';
 import 'package:int_app/src/app/view/home/joystick.dart';
 import 'package:int_app/src/app/view/http/http.dart';
 import 'dart:async';
@@ -31,7 +30,7 @@ class MainScreen extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'main',
 //      home: BluetoothView(),
-          home: HomePage()),
+          home: MainPage()),
     );
   }
 }

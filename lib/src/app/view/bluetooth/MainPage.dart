@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:int_app/src/app/view/home/home.dart';
+import 'package:int_app/src/app/view/home/home_page.dart';
 import 'package:scoped_model/scoped_model.dart';
 import './ChatPage.dart';
 import './DiscoveryPage.dart';
@@ -180,7 +182,7 @@ class _MainPage extends State<MainPage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
-          return ChatPage(server: server);
+          return HomePage(server: server);
         },
       ),
     );

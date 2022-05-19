@@ -87,7 +87,7 @@ class _ChatPage extends State<ChatPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 350),
+            SizedBox(height: 275),
             LiteRollingSwitch(
               value: false,
               textOn: 'Auto',

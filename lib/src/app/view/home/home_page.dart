@@ -1,9 +1,17 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:control_pad/views/joystick_view.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'package:int_app/src/app/view/bluetooth/ChatPage.dart';
+import 'package:int_app/src/app/view/home/home.dart';
 import 'package:int_app/src/app/view/home/map.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final BluetoothDevice server;
+
+  const HomePage({required this.server});
   @override
   _HomePage createState() => _HomePage();
 }
@@ -13,7 +21,14 @@ class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _widgetOptions = <Widget>[JoystickView(size: 200), MapState()];
+    List<Widget> _widgetOptions = <Widget>[
+      ChatPage(
+        server: widget.server,
+      ),
+      MapState(
+        server: widget.server,
+      )
+    ];
 
     void _onItemTapped(int index) {
       setState(() {
@@ -22,9 +37,6 @@ class _HomePage extends State<HomePage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
