@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:control_pad/views/joystick_view.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:int_app/src/app/view/home/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -27,7 +28,7 @@ void main() {
 }
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class MainScreen extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'main',
 //      home: BluetoothView(),
-          home: MyListScreen()),
+          home: HomePage()),
     );
   }
 }
