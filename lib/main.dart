@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:get_it/get_it.dart';
+import 'package:int_app/src/app/view/bluetooth/MainPage.dart';
 import 'package:int_app/src/app/view/home/joystick.dart';
 import 'package:int_app/src/app/view/http/http.dart';
 import 'dart:async';

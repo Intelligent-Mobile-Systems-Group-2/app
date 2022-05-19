@@ -2,19 +2,39 @@ import 'package:flutter/material.dart';
 import 'dart:math' show pi;
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class SwitchButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark()
-          .copyWith(scaffoldBackgroundColor: Color.fromARGB(255, 18, 32, 47)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
+    return Scaffold(
+      //debugShowCheckedModeBanner: false,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(left: 230, top: 200),
+              //Switch toogle implementation
+              child: LiteRollingSwitch(
+                value: true,
+                textOn: 'Auto',
+                textOff: 'Remote',
+                colorOn: Colors.green,
+                colorOff: Colors.grey,
+                iconOn: Icons.power_settings_new,
+                iconOff: Icons.power_settings_new,
+                onChanged: (bool state) {
+                  print('Switch turned ${(state) ? 'on' : 'off'}');
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
         /*child: SizedBox(
           height: 200,
           width: 200,
@@ -23,34 +43,7 @@ class MyApp extends StatelessWidget {
             playIcon: Icon(Icons.play_arrow, color: Colors.black, size: 90),
             onPressed: () {},
           ),*/
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 0),
-                //Switch toogle implementation
-                child: LiteRollingSwitch(
-                  value: true,
-                  textOn: 'Auto',
-                  textOff: 'Remote',
-                  colorOn: Colors.green,
-                  colorOff: Colors.grey,
-                  iconOn: Icons.power_settings_new,
-                  iconOff: Icons.power_settings_new,
-                  onChanged: (bool state) {
-                    print('Switch turned ${(state) ? 'on' : 'off'}');
-                  },
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class PlayButton extends StatefulWidget {
+/*class PlayButton extends StatefulWidget {
   final bool initialIsPlaying;
   final Icon playIcon;
   final Icon pauseIcon;
@@ -190,4 +183,4 @@ class Blob extends StatelessWidget {
       ),
     );
   }
-}
+}*/
