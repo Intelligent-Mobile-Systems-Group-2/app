@@ -9,40 +9,60 @@ const baseUrl = "http://ims.matteobernardi.fr";
 DateTime now = DateTime.now();
 String convertedDateTime =
     "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+String convertedTime =
+    "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+
+/*int hour = now.hour.toInt();
+String newHour = "${hour - 2}";*/
 
 class API {
   static Future getObjectCollision() {
-    var url = baseUrl + "/object-collision/?date=" + convertedDateTime;
+    print(convertedDateTime);
+    var url = baseUrl +
+        "/object-collision/?date=" +
+        convertedDateTime +
+        "&time=" +
+        convertedTime +
+        ":00";
+    print("object " + url);
     return http.get(Uri.parse(url));
   }
 
   static Future getBoundaryCollision() {
-    var url = baseUrl + "/boundary-collision/?date=" + convertedDateTime;
+    var url = baseUrl +
+        "/boundary-collision/?date=" +
+        convertedDateTime +
+        "&time=" +
+        convertedTime +
+        ":00";
+    print("boundary " + url);
     return http.get(Uri.parse(url));
   }
 }
 
 Future<List<CollisionModel>> getCollision() async {
-  var boundryCollisions = List<CollisionModel>.empty();
+  var boundaryCollisions = List<CollisionModel>.empty();
   var objectCollisions = List<CollisionModel>.empty();
   var listOfCollisions = List<CollisionModel>.empty();
 
   // get bondary collison
   await API.getBoundaryCollision().then((response) {
+    print("bound" + response.toString());
     Iterable list = json.decode(response.body);
-    boundryCollisions =
+    boundaryCollisions =
         list.map((model) => CollisionModel.fromJson(model)).toList();
   });
 
   // get object collition
   await API.getObjectCollision().then((response) {
+    print("hej" + response.toString());
     Iterable list = json.decode(response.body);
     objectCollisions =
         list.map((model) => CollisionModel.fromJson(model)).toList();
   });
 
   //Combine the two lists
-  listOfCollisions = [...objectCollisions, ...boundryCollisions];
+  listOfCollisions = [...objectCollisions, ...boundaryCollisions];
 
   //Sort by time
   listOfCollisions.sort((a, b) => a.time.compareTo(b.time));

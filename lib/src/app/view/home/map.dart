@@ -33,38 +33,41 @@ class _MapState extends State<MapState> {
             List<CollisionModel> points = snapshot.data!;
             final List<DrawModel> pointsList = createDrawModelList(points);
             final List<ListTile> objectList = createObjectList(points);
-            return Column(children: [
-              // Map
-              Container(
-                height: 350,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(
-                        color: const Color.fromARGB(255, 115, 115, 115),
-                        width: 5)),
-                child: Center(
-                    child: Container(
+            return SafeArea(
+              child: Column(children: [
+                // Map
+                Container(
+                  height: 400,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      border: Border.all(
+                          color: const Color.fromARGB(255, 115, 115, 115),
+                          width: 5)),
+                  child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        color: Colors.white,
+                        width: 300,
+                        height: 300,
+                        child: CustomPaint(
+                          painter: MowerMap(pointsList),
+                        ),
+                      )),
+                ),
+                // List
+                Container(
                   color: Colors.white,
-                  width: 300,
-                  height: 300,
-                  child: CustomPaint(
-                    painter: MowerMap(pointsList),
-                  ),
-                )),
-              ),
-              // List
-              Container(
-                color: Colors.white,
-                height: 250,
-                width: double.infinity,
-                child: ListView(
-                    children: ListTile.divideTiles(
-                            context: context, tiles: objectList)
-                        .toList()),
-              )
-            ]);
+                  height: 250,
+                  width: double.infinity,
+                  child: ListView(
+                      children: ListTile.divideTiles(
+                              context: context, tiles: objectList)
+                          .toList()),
+                )
+              ]),
+            );
           } else {
             return const CircularProgressIndicator();
           }

@@ -7,16 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
-class ChatPage extends StatefulWidget {
+class RemotePage extends StatefulWidget {
   final BluetoothDevice server;
 
-  const ChatPage({required this.server});
+  const RemotePage({required this.server});
 
   @override
-  _ChatPage createState() => new _ChatPage();
+  _RemotePage createState() => new _RemotePage();
 }
 
-class _ChatPage extends State<ChatPage> {
+class _RemotePage extends State<RemotePage> {
   static final clientID = 0;
   BluetoothConnection? connection;
 
@@ -38,14 +38,8 @@ class _ChatPage extends State<ChatPage> {
         isConnecting = false;
         isDisconnecting = false;
       });
-
+      
       connection!.input!.listen(_onDataReceived).onDone(() {
-        // Example: Detect which side closed the connection
-        // There should be `isDisconnecting` flag to show are we are (locally)
-        // in middle of disconnecting process, should be set before calling
-        // `dispose`, `finish` or `close`, which all causes to disconnect.
-        // If we except the disconnection, `onDone` should be fired as result.
-        // If we didn't except this (no flag set), it means closing by remote.
         if (isDisconnecting) {
           print('Disconnecting locally!');
         } else {
@@ -98,19 +92,16 @@ class _ChatPage extends State<ChatPage> {
               iconOff: Icons.power_settings_new,
               onChanged: (bool state) {
                 if (state == true) {
-                  print(state);
-                  _sendMessage("120 1");
+                  _sendInput("120 1");
                 } else {
-                  print(state);
-                  _sendMessage("0");
+                  _sendInput("0");
                 }
               },
             ),
             JoystickView(
               size: 250,
               onDirectionChanged: (double degree, double distance) {
-                _sendMessage(degree.toStringAsFixed(0) + ' 1');
-                print(degree.toStringAsFixed(0) + ' 1');
+                _sendInput(degree.toStringAsFixed(0) + ' 1');
               },
             ),
           ],
@@ -119,20 +110,13 @@ class _ChatPage extends State<ChatPage> {
     );
   }
 
-  void _sendMessage(String text) async {
+  void _sendInput(String text) async {
     text = text.trim();
 
     if (text.length > 0) {
       try {
         connection!.output.add(Uint8List.fromList(utf8.encode(text + "\r\n")));
         await connection!.output.allSent;
-
-        Future.delayed(Duration(milliseconds: 333)).then((_) {
-          listScrollController.animateTo(
-              listScrollController.position.maxScrollExtent,
-              duration: Duration(milliseconds: 333),
-              curve: Curves.easeOut);
-        });
       } catch (e) {
         // Ignore error, but notify state
         setState(() {});

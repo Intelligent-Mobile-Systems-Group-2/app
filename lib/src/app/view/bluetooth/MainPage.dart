@@ -5,7 +5,7 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:int_app/src/app/view/home/home.dart';
 import 'package:int_app/src/app/view/home/home_page.dart';
 import 'package:scoped_model/scoped_model.dart';
-import './ChatPage.dart';
+import 'remotePage.dart';
 import './DiscoveryPage.dart';
 import './SelectBondedDevicePage.dart';
 
@@ -162,10 +162,9 @@ class _MainPage extends State<MainPage> {
                       },
                     ),
                   );
-
                   if (selectedDevice != null) {
                     print('Connect -> selected ' + selectedDevice.address);
-                    _startChat(context, selectedDevice);
+                    _startRemote(context, selectedDevice);
                   } else {
                     print('Connect -> no device selected');
                   }
@@ -178,7 +177,7 @@ class _MainPage extends State<MainPage> {
     );
   }
 
-  void _startChat(BuildContext context, BluetoothDevice server) {
+  void _startRemote(BuildContext context, BluetoothDevice server) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {

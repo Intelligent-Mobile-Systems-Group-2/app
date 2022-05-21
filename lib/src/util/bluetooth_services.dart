@@ -1,2 +1,0 @@
-const String ROBOT_UUID = "12341001-1234-1234-1234-123456789abc";
-const String UART_UUID = "e603363f-79c3-421f-a49e-3c01c0a6dd23";

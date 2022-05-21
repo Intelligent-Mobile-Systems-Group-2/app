@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:int_app/src/app/view/bluetooth/MainPage.dart';
 import 'package:int_app/src/app/view/home/home_page.dart';
+import 'package:int_app/src/app/view/home/map.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get_it/get_it.dart';

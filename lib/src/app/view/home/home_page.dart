@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:control_pad/views/joystick_view.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import 'package:int_app/src/app/view/bluetooth/ChatPage.dart';
+import 'package:int_app/src/app/view/bluetooth/remotePage.dart';
 import 'package:int_app/src/app/view/home/home.dart';
 import 'package:int_app/src/app/view/home/map.dart';
 
@@ -22,7 +22,7 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = <Widget>[
-      ChatPage(
+      RemotePage(
         server: widget.server,
       ),
       MapState(
