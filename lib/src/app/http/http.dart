@@ -3,28 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:int_app/src/app/view/http/data_model.dart';
+import '../http/data_model.dart';
 
 const baseUrl = "http://ims.matteobernardi.fr";
 DateTime now = DateTime.now();
+//fetch current day
 String convertedDateTime =
     "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+//fetch current time to the minute
 String convertedTime =
     "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
 
-/*int hour = now.hour.toInt();
-String newHour = "${hour - 2}";*/
-
 class API {
   static Future getObjectCollision() {
-    print(convertedDateTime);
     var url = baseUrl +
         "/object-collision/?date=" +
         convertedDateTime +
         "&time=" +
         convertedTime +
         ":00";
-    print("object " + url);
     return http.get(Uri.parse(url));
   }
 
@@ -35,7 +32,6 @@ class API {
         "&time=" +
         convertedTime +
         ":00";
-    print("boundary " + url);
     return http.get(Uri.parse(url));
   }
 }
@@ -47,7 +43,6 @@ Future<List<CollisionModel>> getCollision() async {
 
   // get bondary collison
   await API.getBoundaryCollision().then((response) {
-    print("bound" + response.toString());
     Iterable list = json.decode(response.body);
     boundaryCollisions =
         list.map((model) => CollisionModel.fromJson(model)).toList();
@@ -55,7 +50,6 @@ Future<List<CollisionModel>> getCollision() async {
 
   // get object collition
   await API.getObjectCollision().then((response) {
-    print("hej" + response.toString());
     Iterable list = json.decode(response.body);
     objectCollisions =
         list.map((model) => CollisionModel.fromJson(model)).toList();

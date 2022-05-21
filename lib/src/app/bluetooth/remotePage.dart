@@ -32,38 +32,30 @@ class _RemotePage extends State<RemotePage> {
     super.initState();
 
     BluetoothConnection.toAddress(widget.server.address).then((_connection) {
-      print('Connected to the device');
       connection = _connection;
       setState(() {
         isConnecting = false;
         isDisconnecting = false;
       });
-      
+
       connection!.input!.listen(_onDataReceived).onDone(() {
         if (isDisconnecting) {
-          print('Disconnecting locally!');
-        } else {
-          print('Disconnected remotely!');
-        }
+        } else {}
         if (this.mounted) {
           setState(() {});
         }
       });
-    }).catchError((error) {
-      print('Cannot connect, exception occured');
-      print(error);
-    });
+    }).catchError((error) {});
   }
 
   @override
   void dispose() {
-    // Avoid memory leak (`setState` after dispose) and disconnect
+    // disconnect
     if (isConnected) {
       isDisconnecting = true;
       connection?.dispose();
       connection = null;
     }
-
     super.dispose();
   }
 
@@ -83,9 +75,9 @@ class _RemotePage extends State<RemotePage> {
           children: <Widget>[
             SizedBox(height: 275),
             LiteRollingSwitch(
-              value: false,
-              textOn: 'Auto',
-              textOff: 'Remote',
+              value: true,
+              textOn: 'Remote',
+              textOff: 'Auto',
               colorOn: Colors.green,
               colorOff: Colors.grey,
               iconOn: Icons.power_settings_new,

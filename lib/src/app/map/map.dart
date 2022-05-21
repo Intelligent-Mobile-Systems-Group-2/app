@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:int_app/src/app/view/Canvas.dart';
-import 'package:int_app/src/app/view/http/data_model.dart';
-import 'package:int_app/src/app/view/http/http.dart';
+import 'package:int_app/src/app/map/Canvas.dart';
+import 'package:int_app/src/app/http/data_model.dart';
+import 'package:int_app/src/app/http/http.dart';
 
 class MapState extends StatefulWidget {
   final BluetoothDevice server;
@@ -12,14 +12,6 @@ class MapState extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
 }
-
-final apiData = [
-  {'time': "2022/08/31:13:37", "x": 0.0, "y": 0.0},
-  {'time': "2022/08/31:13:38", "x": 100.0, "y": 30.0, "object": "shoe"},
-  {'time': "2022/08/31:13:39", "x": 90.0, "y": 100.0},
-  {'time': "2022/08/31:13:40", "x": -80.3, "y": 20.1, "object": "rock"},
-  {'time': "2022/08/31:13:41", "x": 90.0, "y": -30.1}
-];
 
 class _MapState extends State<MapState> {
   @override
@@ -92,7 +84,6 @@ createDrawModelList(List<CollisionModel> points) {
       }
       pointList.add(DrawModel(Offset(xVal, yVal), type));
     } catch (err) {
-      print("Error occured while creatint DrawModel values");
       throw err;
     }
   }

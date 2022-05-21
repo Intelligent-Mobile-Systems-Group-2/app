@@ -2,14 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:int_app/src/app/view/home/home.dart';
-import 'package:int_app/src/app/view/home/home_page.dart';
+import 'package:int_app/src/app/home/home_page.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'remotePage.dart';
 import './DiscoveryPage.dart';
 import './SelectBondedDevicePage.dart';
-
-// import './helpers/LineChart.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -144,10 +141,7 @@ class _MainPage extends State<MainPage> {
                     );
 
                     if (selectedDevice != null) {
-                      print('Discovery -> selected ' + selectedDevice.address);
-                    } else {
-                      print('Discovery -> no device selected');
-                    }
+                    } else {}
                   }),
             ),
             ListTile(
@@ -163,11 +157,8 @@ class _MainPage extends State<MainPage> {
                     ),
                   );
                   if (selectedDevice != null) {
-                    print('Connect -> selected ' + selectedDevice.address);
                     _startRemote(context, selectedDevice);
-                  } else {
-                    print('Connect -> no device selected');
-                  }
+                  } else {}
                 },
               ),
             ),

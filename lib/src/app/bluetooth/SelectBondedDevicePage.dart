@@ -6,8 +6,6 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import './BluetoothDeviceListEntry.dart';
 
 class SelectBondedDevicePage extends StatefulWidget {
-  /// If true, on page start there is performed discovery upon the bonded devices.
-  /// Then, if they are not avaliable, they would be disabled from the selection.
   final bool checkAvailability;
 
   const SelectBondedDevicePage({this.checkAvailability = true});

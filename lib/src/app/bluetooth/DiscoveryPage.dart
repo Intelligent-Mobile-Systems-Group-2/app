@@ -6,7 +6,6 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import './BluetoothDeviceListEntry.dart';
 
 class DiscoveryPage extends StatefulWidget {
-  /// If true, discovery starts on page start, otherwise user must press action button.
   final bool start;
 
   const DiscoveryPage({this.start = true});
@@ -62,11 +61,8 @@ class _DiscoveryPage extends State<DiscoveryPage> {
     });
   }
 
-  // @TODO . One day there should be `_pairDevice` on long tap on something... ;)
-
   @override
   void dispose() {
-    // Avoid memory leak (`setState` after dispose) and cancel discovery
     _streamSubscription?.cancel();
 
     super.dispose();
@@ -111,16 +107,11 @@ class _DiscoveryPage extends State<DiscoveryPage> {
               try {
                 bool bonded = false;
                 if (device.isBonded) {
-                  print('Unbonding from ${device.address}...');
                   await FlutterBluetoothSerial.instance
                       .removeDeviceBondWithAddress(address);
-                  print('Unbonding from ${device.address} has succed');
                 } else {
-                  print('Bonding with ${device.address}...');
                   bonded = (await FlutterBluetoothSerial.instance
                       .bondDeviceAtAddress(address))!;
-                  print(
-                      'Bonding with ${device.address} has ${bonded ? 'succed' : 'failed'}.');
                 }
                 setState(() {
                   results[results.indexOf(result)] = BluetoothDiscoveryResult(
